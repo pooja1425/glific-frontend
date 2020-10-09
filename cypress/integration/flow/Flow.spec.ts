@@ -3,7 +3,7 @@ describe('Flow', () => {
 
   let contact = {
     "phone": "911234567891",
-    "name": "John"
+    "name": "Default receiver"
   }
   
   function create_message(contact, message_body) {
@@ -37,7 +37,23 @@ describe('Flow', () => {
     cy.visit('/chat');
   });
 
-  it('should load tag list', () => {
+  it('should complete help flow', () => {
+    cy.request({
+      url: backend_url,
+      method: 'POST',
+      body: create_message(contact, "help")
+    })
+
+    cy.request({
+      url: backend_url,
+      method: 'POST',
+      body: create_message(contact, "1")
+    })
+
+    cy.get('div').should('contain', `Glific is designed specifically for NGOs in the social sector to enable them to interact with their users on a regular basis`)
+  });
+
+  it('should complete new contact flow', () => {
     cy.request({
       url: backend_url,
       method: 'POST',
@@ -62,12 +78,20 @@ describe('Flow', () => {
       body: create_message(contact, "4")
     })
 
+    cy.get('div').should('contain', `Thank you for introducing yourself to us ${contact.name}`)
+
     cy.request({
       url: backend_url,
       method: 'POST',
-      body: create_message(contact, "2")
+      body: create_message(contact, "9")
     })
 
-    cy.get('div').should('contain', `Thank you for introducing yourself to us ${contact.name}`)
+    cy.request({
+      url: backend_url,
+      method: 'POST',
+      body: create_message(contact, "1")
+    })
+
+    cy.get('div').should('contain', `Glific is designed specifically for NGOs in the social sector to enable them to interact with their users on a regular basis`)
   });
 });
