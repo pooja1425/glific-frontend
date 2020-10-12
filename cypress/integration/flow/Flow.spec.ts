@@ -2,7 +2,7 @@ describe('Flow', () => {
   let backend_url = "http://localhost:4000/gupshup"
 
   let contact = {
-    "phone": "911234567891",
+    "phone": "917834811231",
     "name": "Default receiver"
   }
   
@@ -50,6 +50,8 @@ describe('Flow', () => {
       body: create_message(contact, "1")
     })
 
+    cy.wait(2000)
+
     cy.get('div').should('contain', `Glific is designed specifically for NGOs in the social sector to enable them to interact with their users on a regular basis`)
   });
 
@@ -78,6 +80,8 @@ describe('Flow', () => {
       body: create_message(contact, "4")
     })
 
+    cy.wait(2000)
+
     cy.get('div').should('contain', `Thank you for introducing yourself to us ${contact.name}`)
 
     cy.request({
@@ -91,6 +95,8 @@ describe('Flow', () => {
       method: 'POST',
       body: create_message(contact, "1")
     })
+
+    cy.wait(2000)
 
     cy.get('div').should('contain', `Glific is designed specifically for NGOs in the social sector to enable them to interact with their users on a regular basis`)
   });
